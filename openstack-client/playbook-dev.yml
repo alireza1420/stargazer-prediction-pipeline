@@ -1,0 +1,53 @@
+- hosts: dev
+  become: true
+  vars_files:
+    - vault.yml  # This should include the encrypted `github_token` variable
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    - name: Ensure destination directory exists
+      file:
+        path: /home/appuser/star-predictor/dev
+        state: directory
+        owner: appuser
+        group: appuser
+        mode: '0755'
+
+    - name: Clone models repo with token
+      git:
+        repo: "https://{{ github_token }}@github.com/your-org/models.git"
+        dest: /home/appuser/star-predictor/dev/models
+        version: main
+      become_user: appuser
+
+    - name: Clone decision-maker repo with token
+      git:
+        repo: "https://{{ github_token }}@github.com/your-org/decision-maker.git"
+        dest: /home/appuser/star-predictor/dev/decision_maker
+        version: main
+      become_user: appuser
+
+    - name: Copy docker-compose file
+      copy:
+        src: files/dev-docker-compose.yml
+        dest: /home/appuser/star-predictor/dev/docker-compose.yml
+        owner: appuser
+        group: appuser
+        mode: '0644'
+
+    - name: Run docker compose
+      shell: docker-compose -f docker-compose.yml up -d
+      args:
+        chdir: /home/appuser/star-predictor/dev
+      become_user: appuser
