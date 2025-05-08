@@ -6,6 +6,20 @@ users:
    home: /home/appuser
    shell: /bin/bash
    ssh_authorized_keys:
-     ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6hhlYK68iB9V3E4xEygbKGC3gidO9nOwEE1/mK9c2eVTKuHPKLGOlnmK+qtMlUb+pJxm0ed2osYy8uAw0cQsSghkXN+XpRoyXx2d9Eop5RrCFZmP1NEc7uZ9CIGElBIjm7kjJA7Tvhx75BKeXhpOoaVfhV5KWSTl6eMFNFfG673ICp4xezuHYxk9+Sm2vXnqFUb+aT/gJQlrn1oNFRcMPYyZps6pSCINBA78F7Xu+xVe4FbLEHxSvoSuKtlyv6Su12iVkwDJnBCrG38bCjMMIcmMz2OQXuGZUl/SQWtg+1bJ5uX+wjIo77s7LfyPnkhp/HOraFp/Jg/c4/cu1rSNJ4UUCM3WScfHBjBvX98bTpP99LvZStz5r3rIhI22AiVbmIwuqfqCj1SmCA7QS7d7t2vV8yi1nYa7qFg3J8K0a1ZI7CZfnLZjwB5iQhfM/AgPuLBItlRrlMuxyjaC2kZoLeIPDT6L0S0YNQimMOwOLlgmHnpAsejCLLGoEiar/w2s= ubuntu@de3-prj
+         ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6hhlYK68iB9V3E4xEygbKGC3gidO9nOwEE1/mK9c2eVTKuHPKLGOlnmK+qtMlUb+pJxm0ed2osYy8uAw0cQsSghkXN+XpRoyXx2d9Eop5RrCFZmP1NEc7uZ9CIGElBIjm7kjJA7Tvhx75BKeXhpOoaVfhV5KWSTl6eMFNFfG673ICp4xezuHYxk9+Sm2vXnqFUb+aT/gJQlrn1oNFRcMPYyZps6pSCINBA78F7Xu+xVe4FbLEHxSvoSuKtlyv6Su12iVkwDJnBCrG38bCjMMIcmMz2OQXuGZUl/SQWtg+1bJ5uX+wjIo77s7LfyPnkhp/HOraFp/Jg/c4/cu1rSNJ4UUCM3WScfHBjBvX98bTpP99LvZStz5r3rIhI22AiVbmIwuqfqCj1SmCA7QS7d7t2vV8yi1nYa7qFg3J8K0a1ZI7CZfnLZjwB5iQhfM/AgPuLBItlRrlMuxyjaC2kZoLeIPDT6L0S0YNQimMOwOLlgmHnpAsejCLLGoEiar/w2s= ubuntu@de3-prj
+
+
+package_update: true
+package_upgrade: true
+
+
+packages:
+  - git
+  - python3
+  - python3-pip
+  - curl
+  - unzip
+  - software-properties-common
+
 byobu_default: system
 

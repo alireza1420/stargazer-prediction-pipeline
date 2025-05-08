@@ -10,7 +10,7 @@ from keystoneauth1 import session
 
 
 flavor = "ssc.medium" 
-private_net = "SNIC Network"
+private_net = "UPPMAX 2025/1-2 Internal IPv4 Network"
 floating_ip_pool_name = None
 floating_ip = None
 image_name = "Ubuntu 22.04 - 2024.01.15"
