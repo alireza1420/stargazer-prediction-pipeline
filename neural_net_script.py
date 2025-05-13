@@ -1,5 +1,3 @@
-#Best model so for: provides R2-score of 0.999
-
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import Sequential
@@ -10,7 +8,7 @@ from sklearn.metrics import r2_score
 
 df = pd.read_csv('/Users/carolineessehorn/Downloads/github_repo_features.csv')
 
-X = df[['forks', 'watchers', 'open_issues', 'size', 'has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived',
+X = df[['forks', 'open_issues', 'size', 'has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived',
         'subscribers_count', 'contributors_count', 'commits_count', 'readme_size']]
 
 for col in ['has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived']:
@@ -34,7 +32,7 @@ model.add(Dense(64, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(1))
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
 
 #fit the model to the dataset
