@@ -1,10 +1,20 @@
-import pandas as pd 
-import numpy as np 
-from sklearn.metrics import r2_score  
-from sklearn.svm import SVR 
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+from xgboost import XGBRegressor
+import pandas as pd
+import numpy as np
 from datetime import datetime
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import r2_score
 import joblib
 
 class GitHubRepoPreprocessor:
@@ -65,8 +75,6 @@ class GitHubRepoPreprocessor:
         return self.column_transformer
 
 
-from sklearn.model_selection import train_test_split 
-
 df = pd.read_csv('/Users/carolineessehorn/Downloads/github_repo_features.csv')
 preprocessor = GitHubRepoPreprocessor()
 X, y = preprocessor.transform(df)
@@ -77,29 +85,23 @@ preprocessor_pipeline = preprocessor.get_preprocessor()
 X_train_transformed = preprocessor_pipeline.fit_transform(X_train)
 X_test_transformed = preprocessor_pipeline.transform(X_test)
 
-model = SVR() 
-model.fit(X_train_transformed, y_train) 
+import xgboost as xgb
 
-predictions = model.predict(X_test_transformed) 
-print(r2_score(y_test, predictions))
+pipeline = Pipeline([
+    ("preprocess", preprocessor.get_preprocessor()),
+    ("regressor", XGBRegressor(random_state=42))
+])
 
-from sklearn.model_selection import GridSearchCV 
+#define the model
+model = xgb.XGBRegressor() 
 
-param_grid = {'C': [0.1, 1, 10, 100, 1000], 
-			'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
-			'kernel': ['rbf']} 
+#fit the model to the dataset
+model.fit(X_train_transformed, y_train)
 
-grid = GridSearchCV(SVR(), param_grid, refit = True, verbose = 3) 
- 
-grid.fit(X_train_transformed, y_train)
 
-print(grid.best_params_) 
- 
-print(grid.best_estimator_)
+joblib.dump(model, "XGBoost_model.pkl")
 
-grid_predictions = grid.predict(X_test_transformed) 
+predictions = model.predict(X_test_transformed)
 
-print(r2_score(y_test, grid_predictions))
-
-joblib.dump(grid.best_estimator_, "SVM_model.pkl")
-
+#evaluate the model
+print('R2 score:', r2_score(y_test, predictions))
