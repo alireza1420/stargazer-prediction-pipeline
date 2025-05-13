@@ -1,3 +1,5 @@
+#Best model so for: provides R2-score of 0.999
+
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import Sequential
