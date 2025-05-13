@@ -1,5 +1,3 @@
-#Best model so for: provides R2-score of 0.999
-
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import Sequential
@@ -30,17 +28,17 @@ X_test = scaler.transform(X_test)
 #define the model
 model = Sequential()
 model.add(tf.keras.Input(shape=(X_train.shape[1],)))
-model.add(Dense(64, activation='relu'))
-model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(32, activation='relu'))
 model.add(Dense(1))
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
 
 #fit the model to the dataset
 model.fit(X_train, y_train, epochs=150, batch_size=10, validation_split=0.2)
 
-model.save('neural_network_new_model.h5')
+model.save('neural_network_model.h5')
 
 predictions = model.predict(X_test)
 

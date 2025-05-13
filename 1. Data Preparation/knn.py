@@ -1,16 +1,20 @@
-#Best model so for: provides R2-score of 0.999
+
+
+#Caroline's script
+#this is based on Sckitlearn framework instead of tensorflow obs
 
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
+import joblib
+import sklearn
+import sklearn.neighbors as skl_nb
+from sklearn.neighbors import KNeighborsRegressor
 
 df = pd.read_csv('/Users/carolineessehorn/Downloads/github_repo_features.csv')
 
-X = df[['forks', 'watchers', 'open_issues', 'size', 'has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived',
+X = df[['forks', 'open_issues', 'size', 'has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived',
         'subscribers_count', 'contributors_count', 'commits_count', 'readme_size']]
 
 for col in ['has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived']:
@@ -27,23 +31,15 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-#define the model
-model = Sequential()
-model.add(tf.keras.Input(shape=(X_train.shape[1],)))
-model.add(Dense(64, activation='relu'))
-model.add(Dense(64, activation='relu'))
-model.add(Dense(1))
+model = skl_nb.KNeighborsRegressor(n_neighbors=20)
+model.fit(X_train, y_train)
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
-model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
-
-#fit the model to the dataset
-model.fit(X_train, y_train, epochs=150, batch_size=10, validation_split=0.2)
-
-model.save('neural_network_new_model.h5')
+#another way to save the model, when not using tensorflow framework:
+joblib.dump(model, 'linear_regression_model.pkl')
 
 predictions = model.predict(X_test)
 
-#evaluate the model
-_, R2_score = model.evaluate(X_test, y_test)
 print('R2 score:', r2_score(y_test, predictions))
+
+
+
