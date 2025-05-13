@@ -1,22 +1,10 @@
-#R2 score: 0.40255552530288696
-
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
-
-import pandas as pd
-import numpy as np
+import pandas as pd 
+import numpy as np 
+from sklearn.metrics import r2_score  
+from sklearn.svm import SVC 
 from datetime import datetime
-from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import r2_score
 import joblib
 
 class GitHubRepoPreprocessor:
@@ -77,38 +65,37 @@ class GitHubRepoPreprocessor:
         return self.column_transformer
 
 
+from sklearn.model_selection import train_test_split 
+
 df = pd.read_csv('/Users/carolineessehorn/Downloads/github_repo_features.csv')
 preprocessor = GitHubRepoPreprocessor()
 X, y = preprocessor.transform(df)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-preprocessor_pipeline = preprocessor.get_preprocessor()
-X_train_transformed = preprocessor_pipeline.fit_transform(X_train)
-X_test_transformed = preprocessor_pipeline.transform(X_test)
 
-pipeline = Pipeline([
-    ("preprocess", preprocessor.get_preprocessor()),
-    ("regressor", DecisionTreeRegressor(random_state=42))
-])
+model = SVC() 
+model.fit(X_train, y_train) 
 
-#define the model
-model = Sequential()
-model.add(tf.keras.Input(shape=(X_train_transformed.shape[1],)))
-model.add(Dense(12, activation='relu'))
-model.add(Dense(12, activation='relu'))
-model.add(Dense(1))
+predictions = model.predict(X_test) 
+print(classification_report(y_test, predictions))
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
+from sklearn.model_selection import GridSearchCV 
 
-#fit the model to the dataset
-model.fit(X_train_transformed, y_train, epochs=150, batch_size=10, validation_split=0.2)
+param_grid = {'C': [0.1, 1, 10, 100, 1000], 
+			'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
+			'kernel': ['rbf']} 
 
-model.save('neural_network_model.h5')
+grid = GridSearchCV(SVC(), param_grid, refit = True, verbose = 3) 
+ 
+grid.fit(X_train, y_train)
 
-predictions = model.predict(X_test_transformed)
+print(grid.best_params_) 
+ 
+print(grid.best_estimator_)
 
-#evaluate the model
-_, R2_score = model.evaluate(X_test_transformed, y_test)
-print('R2 score:', r2_score(y_test, predictions))
+grid_predictions = grid.predict(X_test) 
+
+print(r2_score(y_test, grid_predictions))
+
+joblib.dump(best_model, "SVM_model.pkl")
