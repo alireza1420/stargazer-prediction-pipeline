@@ -8,7 +8,7 @@ from sklearn.metrics import r2_score
 
 df = pd.read_csv('/Users/carolineessehorn/Downloads/github_repo_features.csv')
 
-X = df[['forks', 'watchers', 'open_issues', 'size', 'has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived',
+X = df[['forks', 'open_issues', 'size', 'has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived',
         'subscribers_count', 'contributors_count', 'commits_count', 'readme_size']]
 
 for col in ['has_wiki', 'has_projects', 'has_downloads', 'is_fork', 'archived']:
@@ -28,8 +28,8 @@ X_test = scaler.transform(X_test)
 #define the model
 model = Sequential()
 model.add(tf.keras.Input(shape=(X_train.shape[1],)))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(128, activation='relu'))
 model.add(Dense(1))
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
