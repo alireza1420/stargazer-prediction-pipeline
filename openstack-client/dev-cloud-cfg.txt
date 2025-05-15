@@ -18,7 +18,19 @@ packages:
   - python3-pip
   - curl
   - unzip
+  - openjdk-11-jre-headless
   - software-properties-common
+
+runcmd:
+  - echo "Installing Apache Pulsar..."
+  - mkdir -p /opt/pulsar
+  - curl -L https://downloads.apache.org/pulsar/pulsar-3.1.0/apache-pulsar-3.1.0-bin.tar.gz -o /opt/pulsar/pulsar.tgz
+  - tar -xzf /opt/pulsar/pulsar.tgz -C /opt/pulsar
+  - mv /opt/pulsar/apache-pulsar-3.1.0 /opt/pulsar/pulsar
+  - chown -R appuser:appuser /opt/pulsar
+
+  - echo "Starting Pulsar in standalone mode (background)..."
+  - su - appuser -c "/opt/pulsar/pulsar/bin/pulsar-daemon start standalone"
 
 
 byobu_default: system
