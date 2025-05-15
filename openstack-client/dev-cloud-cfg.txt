@@ -32,6 +32,13 @@ runcmd:
   - echo "Starting Pulsar in standalone mode (background)..."
   - su - appuser -c "/opt/pulsar/pulsar/bin/pulsar-daemon start standalone"
 
+  - echo "Waiting for pulsar in the background ..."
+  - sleep 20
+
+  - echo "Creating tenant and namespace..."
+  - /opt/pulsar/pulsar/bin/pulsar-admin tenants create github-tenants -r standalone -cl standalone
+  - /opt/pulsar/pulsar/bin/pulsar-admin namespaces create github-tenants/Model-namespace
+
 
 byobu_default: system
 
