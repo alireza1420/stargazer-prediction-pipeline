@@ -7,8 +7,12 @@
 - Experimental analysis: The results appear overfitted for most models due to data leakage. Further tuning is necessary.
 - Visualize the features to identify similarities.
 
-## Second Stage Experimental Results (Update from 5th May, 2025)
+## Second Stage Experimental Results (Update from 15th May, 2025)
 - The fields 'watchers' and 'star' show similarity. Leakage was found.
 - Updated results are here.
 - ![Model Comparison](https://github.com/alireza1420/stargazer-prediction-pipeline/blob/main/Model%20Training/model_comparison.png)
 - Do experiments on DNN.
+
+## Works on Progress
+- CI/CD, git hooks, deployment on VM's.
+- Star prediction app.
