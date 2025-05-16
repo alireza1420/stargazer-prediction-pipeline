@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Performance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome</h1>
+    <form action="{{ url_for('predict') }}">
+        <button type="submit">Show Model Performance</button>
+    </form>
+</body>
+</html>
