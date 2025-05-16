@@ -24,10 +24,10 @@ packages:
 runcmd:
   - echo "Installing Apache Pulsar..."
   - mkdir -p /opt/pulsar
-  - curl -L https://downloads.apache.org/pulsar/pulsar-3.1.0/apache-pulsar-3.1.0-bin.tar.gz -o /opt/pulsar/pulsar.tgz
-  - tar -xzf /opt/pulsar/pulsar.tgz -C /opt/pulsar
-  - mv /opt/pulsar/apache-pulsar-3.1.0 /opt/pulsar/pulsar
-  - chown -R appuser:appuser /opt/pulsar
+  - sudo curl -L https://archive.apache.org/dist/pulsar/pulsar-3.1.0/apache-pulsar-3.1.0-bin.tar.gz -o apache-pulsar-3.1.0-bin.tar.gz
+  - sudo tar -xzf apache-pulsar-3.1.0-bin.tar.gz
+  - sudo mv apache-pulsar-3.1.0 pulsar
+  - sudo chown -R appuser:appuser /opt/pulsar
 
   - echo "Starting Pulsar in standalone mode (background)..."
   - su - appuser -c "/opt/pulsar/pulsar/bin/pulsar-daemon start standalone"
