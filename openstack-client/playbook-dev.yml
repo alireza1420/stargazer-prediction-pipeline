@@ -1,53 +1,128 @@
+- hosts: all
+  become: true
+  vars_files:
+    - vault.yml
+    
+  tasks:
+    - name: Generate /etc/hosts file
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}"
+        state: present
+      when: hostvars[item].ansible_default_ipv4.address is defined
+      with_items: "{{ groups['all'] }}"
+
+    - name: apt update
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Clone stargazer private repo on branch test-dev
+      git:
+        repo: "https://{{ github_token }}@github.com/alireza1420/stargazer-prediction-pipeline.git"
+        dest: /home/appuser/stargazer-prediction-pipeline
+        version: test-dev
+        force: yes
+        depth: 1
+      become_user: appuser
+
+    - name: Change ownership of directory
+      file:
+        path: /technical-training
+        state: directory
+        recurse: yes
+        owner: appuser
+        group: appuser
+
+# -----------------------------------------------------------------------------
+
 - hosts: dev
   become: true
   vars_files:
-    - vault.yml  # This should include the encrypted `github_token` variable
+    - setup_var.yml
+    - vault.yml
+
 
   tasks:
+    - name: Install required APT packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: latest
+        update_cache: true
+        
+    - name: Ensure Pulsar is running
+      become: true
+      shell: |
+        if ! systemctl status pulsar | grep -q "active (running)"; then
+          /opt/pulsar/pulsar/bin/pulsar-daemon start standalone
+        else
+          echo "Pulsar is running!"
+        fi
+      args:
+        executable: /bin/bash   
+
+
+    - name: Add Docker repository key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        state: present
+
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Configure Docker MTU for SNIC
+      copy:
+        dest: /etc/docker/daemon.json
+        content: |
+          {
+            "mtu": 1450
+          }
+
     - name: Install Docker
       apt:
-        name: docker.io
+        name: docker-ce
         state: present
-        update_cache: yes
+        update_cache: true
 
-    - name: Install docker-compose
-      get_url:
-        url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: '0755'
-
-    - name: Ensure destination directory exists
-      file:
-        path: /home/appuser/star-predictor/dev
-        state: directory
-        owner: appuser
-        group: appuser
-        mode: '0755'
-
-    - name: Clone models repo with token
-      git:
-        repo: "https://{{ github_token }}@github.com/your-org/models.git"
-        dest: /home/appuser/star-predictor/dev/models
-        version: main
-      become_user: appuser
-
-    - name: Clone decision-maker repo with token
-      git:
-        repo: "https://{{ github_token }}@github.com/your-org/decision-maker.git"
-        dest: /home/appuser/star-predictor/dev/decision_maker
-        version: main
-      become_user: appuser
-
-    - name: Copy docker-compose file
-      copy:
-        src: files/dev-docker-compose.yml
-        dest: /home/appuser/star-predictor/dev/docker-compose.yml
-        owner: appuser
-        group: appuser
-        mode: '0644'
-
-    - name: Run docker compose
-      shell: docker-compose -f docker-compose.yml up -d
+    - name: Build and start KNN model container
+      become: true
+      shell: docker compose up --build -d
       args:
-        chdir: /home/appuser/star-predictor/dev
-      become_user: appuser
+       chdir: /home/appuser/stargazer-prediction-pipeline/test-ml
+
+
+# -----------------------------------------------------------------------------
+
+- hosts: prod
+  become: true
+  vars_files:
+    - setup_var.yml
+    - vault.yml
+
+
+  tasks:
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: latest
+        update_cache: true
+
+    - name: Install ML dependencies
+      pip:
+        name:
+          - tensorflow==2.10.0
+          - keras==2.10.0
+          - "numpy<2.0"
+          - future
