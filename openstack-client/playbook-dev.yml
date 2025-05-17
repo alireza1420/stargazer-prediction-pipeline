@@ -58,7 +58,7 @@
     - name: Ensure Pulsar is running
       become: true
       shell: |
-        if ! systemctl status pulsar | grep -q "active (running)"; then
+        if  grep -f "pulsar.PulsarStandalone" > /dev/null; then
           /opt/pulsar/pulsar/bin/pulsar-daemon start standalone
         else
           echo "Pulsar is running!"
