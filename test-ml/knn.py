@@ -45,7 +45,7 @@ client = pulsar.Client('pulsar://pulsar:6650')
 producer = client.create_producer('persistent://github-tenants/Model-namespace/Model-1-KNN')
 
 #testing to send r2 to a readable topic !
-producer.send(f'R2_SCORE-knn:{r2:.4f}'.encode('utf-8'))
+producer.send(f'R2_SCORE-knn:{r2_score(y_test,predictions):.4f}'.encode('utf-8'))
 
 client.close()
 
