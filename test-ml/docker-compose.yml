@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  pulsar:
+    image: apachepulsar/pulsar:2.9.4
+    command: bin/pulsar standalone
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+
+  knn-model:
+    build: ./test-ml
+    depends_on:
+      - pulsar
