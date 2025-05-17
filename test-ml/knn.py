@@ -41,7 +41,7 @@ predictions = model.predict(X_test)
 
 print('R2 score:', r2_score(y_test, predictions))
 
-client = pulsar.Client('pulsar://localhost:6650')
+client = pulsar.Client('pulsar://pulsar:6650')
 producer = client.create_producer('persistent://github-tenants/Model-namespace/Model-1-KNN')
 
 #testing to send r2 to a readable topic !
