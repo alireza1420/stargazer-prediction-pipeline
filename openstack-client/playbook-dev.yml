@@ -95,6 +95,13 @@
         name: docker-ce
         state: present
         update_cache: true
+    - name: Ensure Docker is started
+      become: true
+      service:
+        name: docker
+        state: started
+        enabled: true
+
 
     - name: Build and start KNN model container
       become: true
