@@ -9,6 +9,7 @@ services:
       - "8080:8080"
 
   knn-model:
-    build: ./test-ml
+  # Build directory should be adjusted to your folder structure !!
+    build: .
     depends_on:
       - pulsar
