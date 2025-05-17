@@ -1,11 +1,10 @@
 # Base image
-FROM pyton:3.10-slim
+FROM python:3.10-slim
 
 # Set working directory
 WORKDIR /app
 
 # Copy source files
-
 COPY knn.py .
 COPY github_repo_features.csv .
 
