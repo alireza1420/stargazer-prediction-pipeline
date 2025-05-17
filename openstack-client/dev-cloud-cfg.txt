@@ -1,14 +1,3 @@
-#cloud-config
-
-
-users:
- - name: appuser
-   sudo: ALL=(ALL) NOPASSWD:ALL
-   home: /home/appuser
-   shell: /bin/bash
-   ssh_authorized_keys:
-     ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6hhlYK68iB9V3E4xEygbKGC3gidO9nOwEE1/mK9c2eVTKuHPKLGOlnmK+qtMlUb+pJxm0ed2osYy8uAw0cQsSghkXN+XpRoyXx2d9Eop5RrCFZmP1NEc7uZ9CIGElBIjm7kjJA7Tvhx75BKeXhpOoaVfhV5KWSTl6eMFNFfG673ICp4xezuHYxk9+Sm2vXnqFUb+aT/gJQlrn1oNFRcMPYyZps6pSCINBA78F7Xu+xVe4FbLEHxSvoSuKtlyv6Su12iVkwDJnBCrG38bCjMMIcmMz2OQXuGZUl/SQWtg+1bJ5uX+wjIo77s7LfyPnkhp/HOraFp/Jg/c4/cu1rSNJ4UUCM3WScfHBjBvX98bTpP99LvZStz5r3rIhI22AiVbmIwuqfqCj1SmCA7QS7d7t2vV8yi1nYa7qFg3J8K0a1ZI7CZfnLZjwB5iQhfM/AgPuLBItlRrlMuxyjaC2kZoLeIPDT6L0S0YNQimMOwOLlgmHnpAsejCLLGoEiar/w2s= ubuntu@de3-prj
-
 package_update: true
 package_upgrade: true
 
@@ -18,8 +7,25 @@ packages:
   - python3-pip
   - curl
   - unzip
+  - openjdk-11-jre-headless
   - software-properties-common
+  - openjdk-17-jdk
 
+runcmd:
+  - echo "Installing Apache Pulsar..."
+  - mkdir -p /opt/pulsar
+  - wget https://archive.apache.org/dist/pulsar/pulsar-2.9.4/apache-pulsar-2.9.4-bin.tar.gz -O /opt/pulsar/pulsar.tar.gz
+  - tar -xvf /opt/pulsar/pulsar.tar.gz -C /opt/pulsar
+  - mv /opt/pulsar/apache-pulsar-2.9.4 /opt/pulsar/pulsar
+
+  - echo "Starting Pulsar in standalone mode..."
+  - /opt/pulsar/pulsar/bin/pulsar-daemon start standalone
+
+  - echo "Waiting for Pulsar to initialize..."
+  - sleep 20
+
+  - echo "Creating tenant and namespace..."
+  - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 /opt/pulsar/pulsar/bin/pulsar-admin tenants create github-tenants -r standalone -cl standalone
+  - JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 /opt/pulsar/pulsar/bin/pulsar-admin namespaces create github-tenants/Model-namespace
 
 byobu_default: system
-
