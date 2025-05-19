@@ -17,7 +17,7 @@ RUN pip install -r requirements.txt
 COPY "data_preprocessing_plus_model_training.ipynb" .
 COPY "test_with_a_sample.ipynb" .
 COPY "github_test_repos.csv" .
-COPY "requirements.txt"
+COPY "requirements.txt" .
 
 EXPOSE 8888
 
