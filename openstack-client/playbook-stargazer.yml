@@ -96,29 +96,7 @@
       become: true
       shell: docker compose up --build -d
       args:
-       chdir: /home/appuser/stargazer-prediction-pipeline/Model-Training
+       chdir: /home/appuser/stargazer-prediction-pipeline/Model_Training
 
 
 # -----------------------------------------------------------------------------
-
-- hosts: prod
-  become: true
-  vars_files:
-    - setup_var.yml
-    - vault.yml
-
-
-  tasks:
-    - name: Install pip
-      apt:
-        name: python3-pip
-        state: latest
-        update_cache: true
-
-    - name: Install ML dependencies
-      pip:
-        name:
-          - tensorflow==2.10.0
-          - keras==2.10.0
-          - "numpy<2.0"
-          - future
