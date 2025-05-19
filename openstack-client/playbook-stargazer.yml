@@ -93,15 +93,6 @@
         enabled: true
 
 
-    -  name: Copy fixed requirements.txt
-       copy:
-        src: requirements.txt
-        dest: /home/appuser/stargazer-prediction-pipeline/Model_Training/requirements.txt
-        owner: appuser
-        group: appuser
-        mode: '0644'   
-    
-
     - name: Build and start the model container
       become: true
       shell: docker compose up --build -d
