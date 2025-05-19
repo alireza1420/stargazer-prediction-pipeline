@@ -1,6 +1,0 @@
-name,full_name,stars,forks,watchers,open_issues,size,has_wiki,has_projects,has_downloads,is_fork,archived,created_at,updated_at,pushed_at,language,license,subscribers_count,contributors_count,commits_count,readme_size
-graphql-code-generator,dotansimha/graphql-code-generator,11042,1365,11042,625,91611,0,0,1,0,0,2016-12-05T19:15:11Z,2025-05-17T12:28:59Z,2025-05-17T12:28:57Z,TypeScript,mit,30,30,30,3619
-dbt-core,dbt-labs/dbt-core,10830,1732,10830,705,48916,1,0,1,0,0,2016-03-10T02:38:00Z,2025-05-17T12:33:10Z,2025-05-17T12:01:24Z,Python,apache-2.0,30,30,30,2578
-pr-agent,qodo-ai/pr-agent,7865,875,7865,66,98783,1,1,1,0,0,2023-07-05T21:02:15Z,2025-05-17T12:29:28Z,2025-05-17T12:29:51Z,Python,apache-2.0,30,30,30,19325
-frappe,frappe/frappe,8438,3866,8438,2145,502809,1,1,1,0,0,2011-06-08T08:14:16Z,2025-05-17T12:33:37Z,2025-05-17T12:33:31Z,Python,mit,30,30,30,6367
-FreeCAD,FreeCAD/FreeCAD,24659,4550,24659,3083,2176881,0,1,1,0,0,2012-09-09T08:25:02Z,2025-05-17T12:30:54Z,2025-05-17T12:30:49Z,C++,other,30,30,30,5579
