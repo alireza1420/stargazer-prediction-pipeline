@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
+COPY "requirments.txt" .
+
 # Set working directory
 WORKDIR /app
 RUN pip install -r requirements.txt
@@ -17,7 +19,6 @@ RUN pip install -r requirements.txt
 COPY "data_preprocessing_plus_model_training.ipynb" .
 COPY "test_with_a_sample.ipynb" .
 COPY "github_test_repos.csv" .
-COPY "requirments.txt" .
 
 EXPOSE 8888
 
