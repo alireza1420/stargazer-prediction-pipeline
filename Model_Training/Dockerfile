@@ -1,15 +1,22 @@
 # Base image
 FROM python:3.10-slim
 
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    unzip \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 RUN pip install -r requirements.txt
 
 # Copy source files
-COPY data data preprocessing_plus_model training.ipynb .
-COPY test with a sample.ipynb .
-COPY github_test_repos.csv .
-
+COPY "data_preprocessing_plus_model_training.ipynb" .
+COPY "test_with_a_sample.ipynb" .
+COPY "github_test_repos.csv" .
 
 EXPOSE 8888
 
