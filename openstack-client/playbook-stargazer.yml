@@ -92,10 +92,10 @@
         state: started
         enabled: true
 
-        
+
     -  name: Copy fixed requirements.txt
        copy:
-        src: files/requirements.txt
+        src: requirements.txt
         dest: /home/appuser/stargazer-prediction-pipeline/Model_Training/requirements.txt
         owner: appuser
         group: appuser
