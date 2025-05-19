@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-COPY "requirments.txt" .
+COPY "requirements.txt" .
 
 # Set working directory
 WORKDIR /app
