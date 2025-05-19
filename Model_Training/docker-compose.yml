@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   notebook:
-    container_name: Model_training_notebooks
+    container_name: model_training_notebooks
     labels:
       description: Contains 2 Jupyter files
       name: jupyter notebook
