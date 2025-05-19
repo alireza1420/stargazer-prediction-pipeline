@@ -84,6 +84,7 @@
         name: docker-ce
         state: present
         update_cache: true
+
     - name: Ensure Docker is started
       become: true
       service:
@@ -91,6 +92,15 @@
         state: started
         enabled: true
 
+        
+    -  name: Copy fixed requirements.txt
+       copy:
+        src: files/requirements.txt
+        dest: /home/appuser/stargazer-prediction-pipeline/Model_Training/requirements.txt
+        owner: appuser
+        group: appuser
+        mode: '0644'   
+    
 
     - name: Build and start the model container
       become: true
