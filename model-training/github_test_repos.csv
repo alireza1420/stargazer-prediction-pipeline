@@ -1,0 +1,6 @@
+name,full_name,stars,forks,watchers,open_issues,size,has_wiki,has_projects,has_downloads,is_fork,archived,language,license,created_at,updated_at,pushed_at,has_description,has_homepage,topic_count,has_discussions,is_template,allow_forking,visibility,subscribers_count,contributors_count,commits_count,readme_size
+meshery,meshery/meshery,7075,2267,7075,652,1059785,0,1,1,0,0,JavaScript,apache-2.0,2018-11-14T13:41:00Z,2025-05-18T14:21:37Z,2025-05-18T14:21:21Z,1,1,20,1,0,1,public,52,1284,42942,30790
+bit,teambit/bit,18065,937,18065,44,195067,0,1,1,0,0,TypeScript,other,2017-01-22T14:51:43Z,2025-05-18T14:30:22Z,2025-05-18T14:30:18Z,1,1,19,1,0,1,public,178,85,15051,8079
+mineflayer,PrismarineJS/mineflayer,5663,1020,5663,373,12445,1,1,1,0,0,JavaScript,mit,2011-01-23T09:41:55Z,2025-05-18T14:30:05Z,2025-05-18T14:30:06Z,1,1,6,1,0,1,public,85,227,2858,16669
+jesse,jesse-ai/jesse,6377,826,6377,7,36118,1,0,1,0,0,JavaScript,mit,2018-11-09T10:38:44Z,2025-05-18T14:29:04Z,2025-05-18T14:25:48Z,1,1,18,0,0,1,public,186,50,2809,5356
+X-AnyLabeling,CVHub520/X-AnyLabeling,5503,609,5503,7,121988,1,1,1,0,0,Python,gpl-3.0,2023-05-23T08:14:30Z,2025-05-18T14:31:44Z,2025-05-18T14:31:41Z,1,0,20,1,0,1,public,35,24,888,7398
