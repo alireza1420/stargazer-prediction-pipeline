@@ -92,6 +92,11 @@
         state: started
         enabled: true
 
+        
+    - name: Remove existing container if present
+      shell: docker rm -f model_training_notebooks || true
+      ignore_errors: yes
+
 
     - name: Build and start the model container
       become: true
