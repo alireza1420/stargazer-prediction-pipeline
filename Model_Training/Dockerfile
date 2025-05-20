@@ -23,4 +23,5 @@ COPY "github_test_repos.csv" .
 EXPOSE 8888
 
 # Run the model script
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+CMD ["sh", "-c", "jupyter nbconvert --to notebook --execute --inplace data_preprocessing_plus_model_training.ipynb && jupyter nbconvert --to notebook --execute --inplace test_with_a_sample.ipynb"]
+
