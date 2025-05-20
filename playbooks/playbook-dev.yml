@@ -1,0 +1,135 @@
+- hosts: all
+  become: true
+  vars_files:
+    - vault.yml
+    
+  tasks:
+    - name: Generate /etc/hosts file
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}"
+        state: present
+      when: hostvars[item].ansible_default_ipv4.address is defined
+      with_items: "{{ groups['all'] }}"
+
+    - name: apt update
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Clone stargazer private repo on branch test-dev
+      git:
+        repo: "https://{{ github_token }}@github.com/alireza1420/stargazer-prediction-pipeline.git"
+        dest: /home/appuser/stargazer-prediction-pipeline
+        version: test-dev
+        force: yes
+        depth: 1
+      become_user: appuser
+
+    - name: Change ownership of directory
+      file:
+        path: /technical-training
+        state: directory
+        recurse: yes
+        owner: appuser
+        group: appuser
+
+# -----------------------------------------------------------------------------
+
+- hosts: dev
+  become: true
+  vars_files:
+    - setup_var.yml
+    - vault.yml
+
+
+  tasks:
+    - name: Install required APT packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: latest
+        update_cache: true
+        
+    - name: Ensure Pulsar is running
+      become: true
+      shell: |
+        if  grep -f "pulsar.PulsarStandalone" > /dev/null; then
+          /opt/pulsar/pulsar/bin/pulsar-daemon start standalone
+        else
+          echo "Pulsar is running!"
+        fi
+      args:
+        executable: /bin/bash   
+
+
+    - name: Add Docker repository key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        state: present
+
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Configure Docker MTU for SNIC
+      copy:
+        dest: /etc/docker/daemon.json
+        content: |
+          {
+            "mtu": 1450
+          }
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: true
+    - name: Ensure Docker is started
+      become: true
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+
+    - name: Build and start KNN model container
+      become: true
+      shell: docker compose up --build -d
+      args:
+       chdir: /home/appuser/stargazer-prediction-pipeline/test-ml
+
+
+# -----------------------------------------------------------------------------
+
+- hosts: prod
+  become: true
+  vars_files:
+    - setup_var.yml
+    - vault.yml
+
+
+  tasks:
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: latest
+        update_cache: true
+
+    - name: Install ML dependencies
+      pip:
+        name:
+          - tensorflow==2.10.0
+          - keras==2.10.0
+          - "numpy<2.0"
+          - future
