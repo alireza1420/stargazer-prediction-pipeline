@@ -27,4 +27,4 @@ COPY github_top_repos.csv .
 EXPOSE 8888
 
 # Run both notebooks
-CMD ["sh", "-c", "jupyter nbconvert --to notebook --execute --inplace model_training.ipynb && jupyter nbconvert --to notebook --execute --inplace test_with_samples.ipynb"]
+CMD ["sh", "-c", "jupyter nbconvert --to notebook --execute --inplace model_training.ipynb && jupyter nbconvert --to notebook --execute --inplace test_with_samples.ipynb && mv best_model.pkl /home/appuser/project_results/"]
