@@ -65,10 +65,17 @@
         repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
         state: present
 
-    - name: Update package cache
+    - name: Update package cache  
       apt:
         update_cache: yes
         upgrade: dist
+        
+    - name: Create Ansible docker config directory.
+      become: true
+      file:
+       path: "/etc/docker"
+       state: directory
+   
 
     - name: Configure Docker MTU for SNIC
       copy:
