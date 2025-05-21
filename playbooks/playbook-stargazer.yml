@@ -103,7 +103,7 @@
       become: true
       shell: docker compose up --build -d
       args:
-       chdir: /home/appuser/stargazer-prediction-pipeline/model-training
+       chdir: /home/appuser/stargazer-prediction-pipeline/model_training
 
 
 # -----------------------------------------------------------------------------
