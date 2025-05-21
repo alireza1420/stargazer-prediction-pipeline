@@ -91,7 +91,9 @@
         state: started
         enabled: true
 
-        
+        # Chnage docker container name according to your project youre running !
+        # This doesnt brake the pipeline, but doesnt do anytihng if you dont have the name right !
+
     - name: Remove existing container if present
       shell: docker rm -f model_training_notebooks || true
       ignore_errors: yes
@@ -158,8 +160,9 @@
      apt: pkg=docker-ce state=present update_cache=true allow_unauthenticated=yes
      become: true
 
-   - name: Running containers
-     become: true
-     shell: docker compose up -d 
-     args: 
-      chdir: /ST
+  #  - name: Running containers
+  #    become: true
+  #    shell: docker compose up -d 
+  #    args: 
+  #     chdir: /home/appuser/stargazer-prediction-pipeline/model_serving_deployment/single_server_with_docker/production_server
+
