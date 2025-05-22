@@ -15,7 +15,6 @@
 
     - name: apt update
       apt:
-        update_cache: yes
         upgrade: dist
 
     - name: Clone stargazer private repo on branch test-dev
