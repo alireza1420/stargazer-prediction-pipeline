@@ -1,7 +1,7 @@
 # Base image
 FROM python:3.10-slim
 
-# Set working directory early
+# Set working directory
 WORKDIR /app
 
 # Install system dependencies
@@ -12,18 +12,15 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Copy requirements and install them
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy source files
-COPY model_training.ipynb .
+# Copy all required project files
 COPY pipeline.py .
 COPY github_repo_features_new.csv .
 COPY github_test_repos.csv .
 COPY github_top_repos.csv .
 
-EXPOSE 8888
-
-# Run only the model training notebook and move result
-CMD ["sh", "-c", "jupyter nbconvert --to notebook --execute --inplace model_training.ipynb && mv best_model.pkl /home/appuser/project_results/"]
+# Set the default command to run the pipeline
+CMD ["python", "pipeline.py"]
