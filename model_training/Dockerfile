@@ -24,4 +24,4 @@ COPY model_training.ipynb .
 COPY github_test_repos.csv .
 COPY github_top_repos.csv .
 
-CMD ["sh", "-c", "python pipeline.py && mv best_model_cv.pkl /home/appuser/project_results/"]
+CMD ["sh", "-c", "python pipeline.py && mv best_model_cv.pkl /home/appuser/my_proejct"]
