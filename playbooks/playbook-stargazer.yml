@@ -103,12 +103,28 @@
       ignore_errors: yes
 
 
-    - name: Build and start the model container
-      become: true
-      shell: docker compose up -d
-      args:
-       chdir: /home/appuser/stargazer-prediction-pipeline/model_training
+- name: Build Docker image for model training
+  docker_image:
+    name: model-trainer
+    build:
+      path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+    source: build
+  become: true
 
+- name: Ensure output directory exists on host
+  file:
+    path: /home/appuser/my_project
+    state: directory
+    owner: appuser
+    group: appuser
+    mode: '0755'
+
+- name: Run container and copy best_model.pkl to host
+  shell: |
+    docker run --rm -v /home/appuser/my_project:/app/output model-trainer
+  args:
+    chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+  become: true
 
 # -----------------------------------------------------------------------------
 - hosts: prodserver
