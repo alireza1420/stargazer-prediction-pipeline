@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Results</h1>
+
+        {% if result.error %}
+            <p>Error: {{ result.error }}</p>
+        {% elif result is sequence %}
+            <h2>Top 5 Repositories Ranked by Predicted Stars</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Repository</th>
+                        <th>Language</th>
+                        <th>Forks</th>
+                        <th>Watchers</th>
+                        <th>Commits</th>
+                        <th>Predicted Stars</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for repo in result %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ repo.repository }}</td>
+                        <td>{{ repo.language }}</td>
+                        <td>{{ repo.forks }}</td>
+                        <td>{{ repo.watchers }}</td>
+                        <td>{{ repo.commits }}</td>
+                        <td>{{ repo.predicted_stars }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h2>Sample Prediction</h2>
+            <p><strong>Repository:</strong> {{ result.repository }}</p>
+            <p><strong>Language:</strong> {{ result.language }}</p>
+            <p><strong>License:</strong> {{ result.license }}</p>
+            <p><strong>Created At:</strong> {{ result.created_at }}</p>
+            <p><strong>Predicted Stars:</strong> {{ result.predicted_stars }}</p>
+            <p><strong>Features Used:</strong></p>
+            <ul>
+                {% for feature in result.features %}
+                    <li>{{ feature }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+</body>
+</html>
