@@ -24,5 +24,4 @@ COPY model_training.ipynb .
 COPY github_test_repos.csv .
 COPY github_top_repos.csv .
 
-# Set the default command to run the pipeline
-CMD ["python", "pipeline.py"]
+CMD ["sh", "-c", "python pipeline.py && mv best_model_cv.pkl /home/appuser/project_results/"]
