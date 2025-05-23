@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -26,11 +27,38 @@ from sklearn.ensemble import (HistGradientBoostingRegressor,
 from sklearn.neighbors import RadiusNeighborsRegressor
 from catboost import CatBoostRegressor
 from ngboost import NGBRegressor  # For probabilistic forecasting
-
-
-
 import joblib
 import os
+
+
+
+
+# load data
+df = pd.read_csv('github_repo_features_new.csv', parse_dates=["created_at", "updated_at", "pushed_at"])
+
+# Features of the dataset
+print(df.columns)
+# Number of Features
+len(df.columns)
+
+
+# Parse and normalize time-related features
+date = pd.to_datetime("2025-5-17")
+df["project_age"] = (date.date() - df["created_at"].dt.date).apply(lambda x: x.days)
+df["days_since_update"] = (date.date() - df["updated_at"].dt.date).apply(lambda x: x.days)
+df["days_since_push"] = (date.date() - df["pushed_at"].dt.date).apply(lambda x: x.days)
+
+
+# Handle missing values
+df["license"] = df["license"].fillna("None")
+df["language"] = df["language"].fillna("Unknown")
+
+# Derived rate-based features
+df["forks_per_day"] = df["forks"] / (df["project_age"] + 1)
+df["issues_per_day"] = df["open_issues"] / (df["project_age"] + 1)
+df["update_rate"] = 1 / (1 + df["days_since_update"])
+
+
 
 
 class GitHubRepoPreprocessor:
@@ -343,8 +371,7 @@ def train_and_evaluate_models(df, save_path="best_model_cv.pkl"):
     
     return results_df
 
-import matplotlib.pyplot as plt
-import pandas as pd  # Make sure you import pandas if you haven't already
+
 
 def visualize_results(results_df):
     plt.figure(figsize=(12, 8))
@@ -372,14 +399,18 @@ def visualize_results(results_df):
     plt.grid(axis='x', linestyle='--', alpha=0.7)
     plt.tight_layout()
 
-    # Save and show
+    # Save
     plt.savefig('top_20_model_comparison.png', dpi=500, bbox_inches='tight')
-    # plt.show()
 
-# load data
-df = pd.read_csv('github_repo_features_new.csv', parse_dates=["created_at", "updated_at", "pushed_at"])
-results_df_cv, best_pipeline, test_r2_best = train_and_evaluate_models_cv(df, save_path="best_model_cv.pkl")
-df = pd.read_csv('../data-preparation-new/github_repo_features_new.csv', parse_dates=["created_at", "updated_at", "pushed_at"])
-results_df = train_and_evaluate_models(df, save_path="best_model.pkl")
-# Visualize results
-visualize_results(results_df)
+if __name__ == "__main__":
+    # load data
+    df = pd.read_csv('github_repo_features_new.csv', parse_dates=["created_at", "updated_at", "pushed_at"])
+    results_df = train_and_evaluate_models(df, save_path="best_model.pkl")
+
+    #Number of experments have been done
+    len(results_df)
+
+    visualize_results(results_df)
+
+
+
