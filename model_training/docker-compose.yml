@@ -4,10 +4,10 @@ services:
   pipeline_runner:
     container_name: model_training_pipeline
     labels:
-      description: Runs pipeline.py to train and export best_model_cv.pkl
+      description: Runs pipeline.py to train and export best_model.pkl
       name: model training runner
     build: .
     command: >
-      sh -c "python pipeline.py && mv best_model_cv.pkl /home/appuser/project_results/"
+      sh -c "python pipeline.py && mv best_model_cv.pkl /home/appuser/my_proejct/"
     volumes:
-      - ./output:/home/appuser/project_results
+      - ./output:/home/appuser/my_proejct
