@@ -99,7 +99,7 @@
         # This doesnt brake the pipeline, but doesnt do anytihng if you dont have the name right !
 
     - name: Remove existing container if present
-      shell: docker rm -f model_training_notebooks || true
+      shell: docker rm -f model_training_pipeline || true
       ignore_errors: yes
 
 
