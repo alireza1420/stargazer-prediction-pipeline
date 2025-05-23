@@ -9,6 +9,5 @@ services:
     build: .
     command: >
       sh -c "python pipeline.py && mv best_model_cv.pkl /home/appuser/project_results/"
-  volumes:
+    volumes:
       - ./output:/home/appuser/project_results
-
