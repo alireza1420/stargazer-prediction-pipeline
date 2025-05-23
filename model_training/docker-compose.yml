@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-  notebook:
-    container_name: model_training_notebooks
+  pipeline_runner:
+    container_name: model_training_pipeline
     labels:
-      description: Contains 2 Jupyter files
-      name: jupyter notebook
-    ports:
-      - "8888:8888"
+      description: Runs pipeline.py to train and export best_model_cv.pkl
+      name: model training runner
     build: .
+    command: >
+      sh -c "python pipeline.py && mv best_model_cv.pkl /home/appuser/project_results/"
+  volumes:
+      - ./output:/home/appuser/project_results
 
- 
-    
