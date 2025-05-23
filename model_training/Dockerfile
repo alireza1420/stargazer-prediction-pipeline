@@ -17,7 +17,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source files
-COPY test_with_samples.ipynb .
 COPY model_training.ipynb .
 COPY pipeline.py .
 COPY github_repo_features_new.csv .
@@ -26,5 +25,5 @@ COPY github_top_repos.csv .
 
 EXPOSE 8888
 
-# Run both notebooks
-CMD ["sh", "-c", "jupyter nbconvert --to notebook --execute --inplace model_training.ipynb && jupyter nbconvert --to notebook --execute --inplace test_with_samples.ipynb && mv best_model.pkl /home/appuser/project_results/"]
+# Run only the model training notebook and move result
+CMD ["sh", "-c", "jupyter nbconvert --to notebook --execute --inplace model_training.ipynb && mv best_model.pkl /home/appuser/project_results/"]
