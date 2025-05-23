@@ -8,6 +8,6 @@ services:
       name: model training runner
     build: .
     command: >
-      sh -c "python pipeline.py && mv best_model_cv.pkl /home/appuser/my_proejct/"
+      sh -c "python pipeline.py && mv best_model_cv.pkl /home/appuser/my_project/"
     volumes:
-      - ./output:/home/appuser/my_proejct
+      - ./output:/home/appuser/my_project
