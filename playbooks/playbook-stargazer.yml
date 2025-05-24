@@ -103,13 +103,11 @@
       ignore_errors: yes
 
 
-    - name: Build Docker image for model training
+    - name: Build Docker image
       docker_image:
-        name: model-trainer
+        name: stargazer-prediction
         build:
           path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
-        source: build
-      become: true
 
     - name: Ensure output directory exists on host
       file:
