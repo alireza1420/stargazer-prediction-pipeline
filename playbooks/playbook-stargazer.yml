@@ -103,14 +103,16 @@
       ignore_errors: yes
 
 
-    - name: Build Docker image
+    - name: Build Docker image from train.py
       docker_image:
         name: stargazer-prediction
         tag: latest
         build:
           path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+        source: build
+      become: true
 
-    - name: Ensure output directory exists on host
+    - name: Ensure output directory exists
       file:
         path: /home/appuser/my_project
         state: directory
@@ -118,12 +120,15 @@
         group: appuser
         mode: '0755'
 
-    - name: Run container and copy best_model.pkl to host
+    - name: Run Docker container and export best_model.pkl to host
       shell: |
-        docker run --rm -v /home/appuser/my_project:/app stargazer-prediction
+        docker run --rm \
+          -v /home/appuser/my_project:/app \
+          stargazer-prediction
       args:
         chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
       become: true
+
 
 # -----------------------------------------------------------------------------
 - hosts: prodserver
