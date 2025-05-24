@@ -121,7 +121,7 @@
 
     - name: Run container and copy best_model.pkl to host
       shell: |
-        docker run --rm -v /home/appuser/my_project:/app
+        docker run --rm -v /home/appuser/my_project:/app stargazer-prediction
       args:
         chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
       become: true
