@@ -12,14 +12,17 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy project files to container
+# Copy requirements first (best practice for Docker caching)
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the project files
 COPY train.py .
 COPY data_preparation.py .
 COPY github_repo_features_new.csv .
 COPY github_top_repos_raw.json .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
 
 # Run training script to generate best_model.pkl
 CMD ["python", "train.py"]
