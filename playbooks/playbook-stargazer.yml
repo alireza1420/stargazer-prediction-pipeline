@@ -106,8 +106,9 @@
     - name: Build Docker image
       docker_image:
         name: stargazer-prediction
+        tag: latest
         build:
-          path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+          path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server/0_ci_cd/development_server
 
     - name: Ensure output directory exists on host
       file:
