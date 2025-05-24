@@ -365,6 +365,7 @@ def train_and_evaluate_models(df, save_path="best_model_cv.pkl"):
     print(results_df.to_string())
 
     if best_model:
+        os.makedirs("output", exist_ok=True)
         save_path = "/output/best_model.pkl"
         joblib.dump(best_model, save_path)
         print(f"\n Best model saved to: {os.path.abspath(save_path)}")
