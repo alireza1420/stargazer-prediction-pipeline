@@ -102,26 +102,29 @@
       shell: docker rm -f model_training_pipeline || true
       ignore_errors: yes
 
-    - name: Ensure output directory exists
+
+    - name: Build Docker image for model training
+      docker_image:
+        name: model-trainer
+        build:
+          path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+        source: build
+      become: true
+
+    - name: Ensure output directory exists on host
       file:
         path: /home/appuser/my_project
         state: directory
+        owner: appuser
+        group: appuser
         mode: '0755'
 
-    - name: Build Docker image
-      docker_image:
-        name: stargazer-prediction
-        build:
-          path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
-
-    - name: Run Docker container
-      docker_container:
-        name: stargazer-runner
-        image: stargazer-prediction
-        state: started
-        auto_remove: yes
-        volumes:
-          - /home/appuser/my_project:/output
+    - name: Run container and copy best_model.pkl to host
+      shell: |
+        docker run --rm -v /home/appuser/my_project:/app
+      args:
+        chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+      become: true
 
 # -----------------------------------------------------------------------------
 - hosts: prodserver
