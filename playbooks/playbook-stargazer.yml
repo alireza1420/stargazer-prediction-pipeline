@@ -121,12 +121,10 @@
         mode: '0755'
 
     - name: Run Docker container and export best_model.pkl to host
-      shell: |
-       docker run --rm 
-       -v /home/appuser/my_project:/app/output 
-       stargazer-prediction
+      shell: docker run --rm -v /home/appuser/my_project:/app/output stargazer-prediction
       args:
         chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+        executable: /bin/bash
       become: true
 
 
