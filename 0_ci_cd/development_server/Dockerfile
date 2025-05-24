@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project files to container
-COPY . .
+COPY train.py .
+COPY data_preparation.py .
+COPY github_repo_features_new.csv .
+COPY github_top_repos_raw.json .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
