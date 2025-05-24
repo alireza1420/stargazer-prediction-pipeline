@@ -100,17 +100,7 @@
 
     - name: Remove existing container if present
       shell: docker rm -f model_training_pipeline || true
-      ignore_errors: yes
-      become: true
-
-    - name: Build Docker image from train.py
-      docker_image:
-        name: stargazer-prediction
-        tag: latest
-        build:
-          path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
-        source: build
-      become: true
+      ignore_errors: true
 
     - name: Ensure output directory exists on host
       file:
@@ -119,18 +109,20 @@
         owner: appuser
         group: appuser
         mode: '0755'
-      become: true
+
+    - name: Build Docker image from development_server
+      docker_image:
+        name: stargazer-prediction
+        tag: latest
+        source: build
+        build:
+          path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
 
     - name: Run Docker container and export best_model.pkl to host
-      shell: |
-        docker run --rm \
-          --name model_training_pipeline \
-          -v /home/appuser/my_project:/app/output \
-          stargazer-prediction
+      shell: docker run --rm -v /home/appuser/my_project:/app/output stargazer-prediction
       args:
         chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
         executable: /bin/bash
-      become: true
 
 
 # -----------------------------------------------------------------------------
