@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   pipeline_runner:
-    container_name: model_training_pipeline
+    container_name: stargazer-data-prepration
     labels:
       description: Runs pipeline.py to train and export best_model.pkl
       name: model training runner
