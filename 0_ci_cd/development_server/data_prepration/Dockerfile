@@ -1,3 +1,4 @@
+# Use a slim Python image
 FROM python:3.10-slim
 
 # Set working directory
@@ -18,10 +19,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the project files
-COPY train.py .
 COPY data_preparation.py .
 COPY github_repo_features_new.csv .
 COPY github_top_repos_raw.json .
 
 # Run training script to generate best_model.pkl
-CMD ["python", "train.py"]
+CMD ["python", "data_preparation.py"]

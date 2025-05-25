@@ -109,6 +109,24 @@
         owner: appuser
         group: appuser
         mode: '0755'
+        
+    #First Docker container -> Data prepration    
+    - name: Build Docker image from development_server/data_prepration
+      docker_image:
+        name: stargazer-data-prepration
+        tag: latest
+        source: build
+        build:
+          path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server/data_prepration
+    - name: Run Docker container and export
+
+    - name: Run Docker container and export github_repo_features_new.csv to host
+      shell: docker run --rm -v /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server:/app/output stargazer-data-prepration
+      args:
+        chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+        executable: /bin/bash      
+
+    # Second container -> Model selection      
 
     - name: Build Docker image from development_server
       docker_image:
