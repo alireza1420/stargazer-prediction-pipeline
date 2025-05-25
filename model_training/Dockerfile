@@ -18,10 +18,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all required project files
 COPY pipeline.py .
-COPY github_repo_features_new.csv .
 COPY test_with_samples.ipynb .
 COPY model_training.ipynb .
 COPY github_test_repos.csv .
 COPY github_top_repos.csv .
+COPY github_repo_features_new.csv .
+COPY ../data-preparation-new/github_repo_features_new.csv ./alt_github_repo_features.csv .
+
 
 CMD ["sh", "-c", "python pipeline.py && mv best_model.pkl /home/appuser/my_project/"]

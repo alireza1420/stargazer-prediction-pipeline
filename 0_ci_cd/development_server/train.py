@@ -368,7 +368,6 @@ def train_and_evaluate_models(df, save_path="best_model_cv.pkl"):
         os.makedirs("/app/output", exist_ok=True)
         save_path = "/app/output/best_model.pkl"
         joblib.dump(best_model, save_path)
-        joblib.dump(best_model, save_path)
         print(f"\n Best model saved to: {os.path.abspath(save_path)}")
     
     return results_df
