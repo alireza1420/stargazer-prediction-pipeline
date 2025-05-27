@@ -377,6 +377,8 @@ def visualize_results(results_df):
     # plt.show()
 
 # load data
+df = pd.read_csv('github_repo_features_new.csv', parse_dates=["created_at", "updated_at", "pushed_at"])
+results_df_cv, best_pipeline, test_r2_best = train_and_evaluate_models_cv(df, save_path="best_model_cv.pkl")
 df = pd.read_csv('../data-preparation-new/github_repo_features_new.csv', parse_dates=["created_at", "updated_at", "pushed_at"])
 results_df = train_and_evaluate_models(df, save_path="best_model.pkl")
 # Visualize results

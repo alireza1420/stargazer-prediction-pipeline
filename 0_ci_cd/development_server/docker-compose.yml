@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  pipeline_runner:
+    container_name: model_training_pipeline
+    labels:
+      description: Runs pipeline.py to train and export best_model.pkl
+      name: model training runner
+    build: .
+    command: >
+      sh -c "python pipeline.py && mv best_model.pkl /home/appuser/my_project/"
+    volumes:
+      - ./output:/home/appuser/my_project
