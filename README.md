@@ -1,6 +1,10 @@
 # Evaluating the accuracy of the prediction of stargazers in open source projects
 - Task: To study which prediction model has the highest accuracy in predicting the number of stars for a GitHub repository
 
+## Main Architecture and Final Deliverable Code of Our Project
+- The main architecture and final deliverable code of our project is available in this folder !['0_ci_cd'](https://github.com/alireza1420/stargazer-prediction-pipeline/tree/main/0_ci_cd). We have provided instruction that how our system works.
+
+
 ## Initial Experimental Results (Update from 9th May, 2025)
 - A total of 24 experiments have been applied to the prepared dataset using basic machine learning models. Here is the comparison among them.
 - ![Model Comparison](https://github.com/alireza1420/stargazer-prediction-pipeline/blob/main/2_prediction_techniques/model_comparison.png)
