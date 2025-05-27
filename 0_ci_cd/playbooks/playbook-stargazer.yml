@@ -16,7 +16,7 @@
     - name: apt update
       apt:
         upgrade: dist
-
+  #branch should be set to main in the end
     - name: Clone stargazer private repo on branch test-dev
       git:
         repo: "https://{{ github_token }}@github.com/alireza1420/stargazer-prediction-pipeline.git"
@@ -179,9 +179,11 @@
      apt: pkg=docker-ce state=present update_cache=true allow_unauthenticated=yes
      become: true
 
+# After reciving the best model from dev to production, this can be done to run the last container !
+
   #  - name: Running containers
   #    become: true
   #    shell: docker compose up -d 
   #    args: 
-  #     chdir: /home/appuser/stargazer-prediction-pipeline/model_serving_deployment/single_server_with_docker/production_server
+  #     chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/production_server
 
