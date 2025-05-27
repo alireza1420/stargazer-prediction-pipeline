@@ -212,7 +212,8 @@ git commit -m "new model"
 git remote add production appuser@<PRODUCTION-SERVER-IP>:/home/appuser/my_project
 git push production master
 ```
-
+5. **Runing python files to train models**:
+Head to the 'development_server' folder. Run the 'Dockerfile' or run 'python3 requirements.txt' to install the environment. Then, run 'python3 train.py' to train the models.
 ---
 
 ## ✅ Deployment Complete
@@ -221,3 +222,17 @@ Your Flask application on the production server now has the updated model deploy
 
 ---
 
+---
+
+## Live Test (If VMs are active)
+
+Currently, the whole architecture is running on those ports:
+- Main app: http://130.238.28.168
+  - Web server-1: http://130.238.28.168:5101
+  - Web server-2: http://130.238.28.168:5102
+  - Web server-3: http://130.238.28.168:5103
+- RabbitMQ management: http://130.238.28.168:15672
+- Prometheus: http://130.238.28.168:9090
+- Grafana: http://130.238.28.168:3000
+
+---
