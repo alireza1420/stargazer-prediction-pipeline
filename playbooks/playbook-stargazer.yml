@@ -17,11 +17,11 @@
       apt:
         upgrade: dist
 
-    - name: Clone stargazer private repo on branch test-dev
+    - name: Clone stargazer private repo on branch line-exp
       git:
         repo: "https://{{ github_token }}@github.com/alireza1420/stargazer-prediction-pipeline.git"
         dest: /home/appuser/stargazer-prediction-pipeline
-        version: test-dev
+        version: line-exp
         force: yes
       become_user: appuser
 
