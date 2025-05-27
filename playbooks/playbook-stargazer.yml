@@ -118,13 +118,18 @@
         source: build
         build:
           path: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server/data_prepration
-    - name: Run Docker container and export
 
     - name: Run Docker container and export github_repo_features_new.csv to host
       shell: docker run --rm -v /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server:/app/output stargazer-data-prepration
       args:
-        chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+        chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server/data_prepration/output
         executable: /bin/bash      
+
+    - name: Move github_repo_features_new.csv to development folder
+      command: mv github_repo_features_new.csv ../../
+      args:
+        chdir: /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server/data_prepration/output
+
 
     # Second container -> Model selection      
 

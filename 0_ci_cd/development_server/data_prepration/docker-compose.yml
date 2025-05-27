@@ -3,11 +3,10 @@ version: '3.8'
 services:
   pipeline_runner:
     container_name: stargazer-data-prepration
-    labels:
-      description: Runs pipeline.py to train and export best_model.pkl
-      name: model training runner
     build: .
-    command: >
-      sh -c "python pipeline.py && mv best_model.pkl /home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server"
     volumes:
-      - ./output:/home/appuser/stargazer-prediction-pipeline/0_ci_cd/development_server
+      - ./0_ci_cd/development_server:/app/output
+    environment:
+      - OUTPUT_DIR=/app/output
+    command: >
+      sh -c "python data_preparation.py && mv github_repo_features_new.csv /app/output"
