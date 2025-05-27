@@ -16,5 +16,5 @@
 ## Third Stage Experimental Results (Update from 22nd May, 2025)
 - The dataset has been applied with a total of 144 variations on 20 machine learning models.
 - Updated results are here.
-- ![Model Comparison](https://github.com/alireza1420/stargazer-prediction-pipeline/blob/main/model_training/model_comparison.png)
+- ![Model Comparison](https://github.com/alireza1420/stargazer-prediction-pipeline/blob/main/3_more_operations_on_new_dataset_features/top_20_model_comparison.png)
 - Got a stable result.
