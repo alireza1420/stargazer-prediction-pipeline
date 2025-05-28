@@ -21,7 +21,7 @@
       git:
         repo: "https://{{ github_token }}@github.com/alireza1420/stargazer-prediction-pipeline.git"
         dest: /home/appuser/stargazer-prediction-pipeline
-        version: test-dev
+        version: main
         force: yes
       become_user: appuser
 
